@@ -1,0 +1,49 @@
+.employees{
+    &__card{
+        min-width: 300px;
+        border-radius: 15px;
+        margin: 5px;
+        width: 380px;
+        height: 320px;
+        display: flex;
+        flex-direction: column;  
+        align-items: flex-start;
+        box-shadow: 10px 10px 20px 10px rgba(188, 188, 204, 0.164);
+    }
+    &__title{
+        font-family: 'Robota', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 30px;
+        margin-left: 40px;
+        margin-bottom: 45px;
+    }
+    &__phone{
+        display: flex;
+        font-size: 19px;
+        align-items: center;
+        margin-left: 35px;
+        margin-bottom: 10px;
+        font-family: 'Heebo', sans-serif;
+        color: #868C91;        
+    }
+    &__email{
+        font-family: 'Heebo', sans-serif;
+        display: flex;
+        font-size: 15px;
+        align-items: center;
+        margin-left: 38px;
+        color: #868C91;
+        text-decoration: underline;
+    }
+    &__phone__icon{
+        font-size: 25px;
+        color: #B753D1; 
+        margin-right: 10px;
+    }
+    &__email__icon{
+        font-size: 25px;
+        color: #B753D1; 
+        margin-right: 10px;
+    }
+}
