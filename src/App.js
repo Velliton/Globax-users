@@ -1,25 +1,104 @@
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+
 import './App.css';
+import '../src/components/Card'
+import Card from '../src/components/Card';
+import Popup from './components/Popup';
+
+import useDebounce from './utils/useDebounce';
+
+
+const API_HOST = process.env.REACT_APP_API_HOST;
+
+console.log(API_HOST);
+
 
 function App() {
+  const [items, setItems] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [modalActive, setModalActive] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [cardActive, setCardActive] = useState();
+
+
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+
+
+  useEffect(()=>{
+      searchUsers(debouncedSearchValue);
+  },[debouncedSearchValue]);
+
+  const searchUsers = async (searchQuery) => {
+    const fullUrl = searchQuery ? `${API_HOST}?term=${searchQuery}` : API_HOST;
+    setIsSearching(true);
+
+    return axios.get(fullUrl).then(res=>{
+      setIsSearching(false);
+      setItems(res.data);
+    });
+  }
+
+  const onChangeSearchInput=(event)=>{
+    setSearchValue(event.target.value);
+  };
+
+  let searchIcon = searchValue ? <img className='close__icon' width="25px" height="25px" src='../img/close.svg' alt='close' onClick={()=>setSearchValue('')} />
+  : <img className='search__icon' width="25px" height="25px" src='../img/search.svg' alt='search'/>;
+
+  searchIcon = isSearching ? <img className='search__icon spin' src='../img/loader.svg' width="25px" height="25px" alt='load' /> : searchIcon
+   
+  const onCardClickHandler=(e)=>{
+    const indexCard = e.currentTarget.getAttribute('data-obj-id');
+    setModalActive(true);
+    setCardActive(items[indexCard]);
+  }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Popup
+        active={modalActive}
+        onModalClose={()=>setCardActive(null)}
+        setActive={setModalActive}
+        item={cardActive}
+      />
+      
+      <div className='employees'>
+        <form action="" method="get" className='employees__search'>
+          <input onChange={onChangeSearchInput} placeholder="Поиск..." type="search" value={searchValue}/>
+          {searchIcon}
+        </form>
+        
+        <div className='employees__cards'>
+        {
+          items.map((obj, index)=>
+            <Card 
+              onClickCard={onCardClickHandler}
+              data-obj-id={index}
+              key={obj.email}
+              title={obj.name}
+              phone={obj.phone}
+              email={obj.email}
+              modalActive={modalActive}
+              setModalActive={setModalActive}
+            />)
+        }
+
+
+          
+        </div>
+
+        
+
+      </div>
+      
     </div>
   );
+
+  
 }
+
+
 
 export default App;
