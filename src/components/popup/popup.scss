@@ -12,21 +12,23 @@
     justify-content: center;  
     transform: scale(0);
     z-index: 1;
+    &__block{
+        padding-left: 30px;
+        padding-right: 10px;
+        width: 580px;
+        height: 470px;
+        border-radius: 20px;
+        background-color:white;
+        display: flex;
+        flex-direction: column;
+    }
 }
 .modal.active{
     transform: scale(1);
 }
 
 .modal__block{
-    padding-left: 30px;
-    padding-right: 10px;
-    width: 580px;
-    height: 470px;
-    border: 1px solid grey;
-    border-radius: 20px;
-    background-color:white;
-    display: flex;
-    flex-direction: column;
+    
     
 }
 
